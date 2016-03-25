@@ -1,3 +1,5 @@
 ## GriefSaveAPI Config File ##
 useListeners: true
 debugMessages: true
+recordBlockPlace: false
+blacklist: []

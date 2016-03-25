@@ -6,14 +6,15 @@ import java.util.logging.Logger;
 
 import org.bukkit.Material;
 import org.bukkit.plugin.PluginManager;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import me.drkmatr1984.GriefSaveAPI.listeners.BlockEventListeners;
 
-public class GriefSaveAPI extends org.bukkit.plugin.java.JavaPlugin
+public class GriefSaveAPI extends JavaPlugin
 {
-  public GriefSaveAPI plugin;
-  private Logger log = getLogger();
-  private PluginManager pm = getServer().getPluginManager(); //Used to register Events
+  private static GriefSaveAPI plugin;
+  private Logger log;
+  private PluginManager pm; //Used to register Events
   private Set<SBlock> blocksBroken = new HashSet<SBlock>();
   private Set<Material> banList = new HashSet<Material>();
   public boolean recordBlockPlaced; // create config that asks if they would also like to record blockPlaces
@@ -21,14 +22,19 @@ public class GriefSaveAPI extends org.bukkit.plugin.java.JavaPlugin
   public boolean debugMessages;
   private DataAccessor data; 
   
+  @Override
   public void onEnable()
   {
 	plugin = this; //creates a plugin instance for easy access to plugin
+	this.log = getLogger();
+	this.pm = getServer().getPluginManager();
 	this.data = new DataAccessor(this);
 	this.data.initializeConfig();
 	this.data.loadData();
 	this.useListeners = this.data.useListeners;
 	this.debugMessages = this.data.debugMessages;
+	this.recordBlockPlaced = this.data.recordBlockPlaced;
+	getCommand("rollback").setExecutor(new GriefSaveCommands(plugin));
 	if(useListeners){
 		pm.registerEvents(new BlockEventListeners(plugin, this.blocksBroken, banList), plugin);
 	}	
@@ -45,12 +51,13 @@ public class GriefSaveAPI extends org.bukkit.plugin.java.JavaPlugin
    *  the list within the API
    * */
   
+  /*
   public GriefSaveAPI(boolean useListeners, boolean debugMessages){
 	  plugin = this; //creates a plugin instance for easy access to plugin
 	  this.data.loadData();
 	  this.useListeners = this.data.useListeners;
 	  this.debugMessages = this.data.debugMessages;
-  }
+  }*/
   
   public void setBlocksBroken(Set<SBlock> blocksBroken){
 	  this.blocksBroken = blocksBroken;
@@ -82,6 +89,10 @@ public class GriefSaveAPI extends org.bukkit.plugin.java.JavaPlugin
 		  }
 	  }
 	  return false;
+  }
+  
+  public static GriefSaveAPI getInstance(){
+	  return plugin;
   }
   
 }

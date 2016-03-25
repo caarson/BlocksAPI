@@ -3,3 +3,9 @@ version: 0.1
 main: me.drkmatr1984.GriefSaveAPI.GriefSaveAPI
 
 description: An API to save blocks and their states when damage is done to them or when specified by the developer/config
+
+commands:
+  rollback:
+    description: Rolls back all blocks to recorded values
+    usage: |
+        /rollback - Rolls back all blocks to recorded values

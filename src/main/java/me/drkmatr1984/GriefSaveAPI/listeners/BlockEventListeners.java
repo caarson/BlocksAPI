@@ -8,6 +8,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.CreatureSpawner;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -15,12 +16,11 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockBurnEvent;
-import org.bukkit.event.block.BlockDamageEvent;
+//import org.bukkit.event.block.BlockDamageEvent;
 import org.bukkit.event.block.BlockExplodeEvent;
 import org.bukkit.event.block.BlockIgniteEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
-
 import me.drkmatr1984.GriefSaveAPI.SBlock;
 import me.drkmatr1984.GriefSaveAPI.GriefSaveAPI;
 
@@ -52,10 +52,15 @@ public class BlockEventListeners implements Listener{
 			blocksBroken.add(bL);
 			plugin.setBlocksBroken(blocksBroken);
 			if(plugin.debugMessages){
+				Bukkit.getServer().getLogger().info("BlockBreakEvent");
 				Bukkit.getServer().getLogger().info("Saved BlockLocation");
 				Bukkit.getServer().getLogger().info("Location : " + "X:"+ location.getX() + ", " + "Y:"+ location.getY() + ", " + "Z:"+ location.getZ());
-				Bukkit.getServer().getLogger().info("BlockType : " + block.getType().toString());
+				Bukkit.getServer().getLogger().info("BlockType : " + block.getType().name().toString());
 				Bukkit.getServer().getLogger().info("Entity : " + bL.ent);
+				if(block.getState().getData() instanceof CreatureSpawner){
+					Bukkit.getServer().getLogger().info("EntitySpawned: " + bL.entityType);
+					Bukkit.getServer().getLogger().info("SpawnDelay: " + bL.delay);
+				}
 			}
 		}
 	}
@@ -76,6 +81,7 @@ public class BlockEventListeners implements Listener{
 					blocksBroken.add(bL);
 					plugin.setBlocksBroken(blocksBroken);
 					if(plugin.debugMessages){
+						Bukkit.getServer().getLogger().info("EntityExplodeEvent");
 						Bukkit.getServer().getLogger().info("Saved BlockLocation");
 						Location location = b.getLocation();
 						Bukkit.getServer().getLogger().info("Location : " + "X:"+ location.getX() + ", " + "Y:"+ location.getY() + ", " + "Z:"+ location.getZ());
@@ -98,6 +104,7 @@ public class BlockEventListeners implements Listener{
 					blocksBroken.add(bL);
 					plugin.setBlocksBroken(blocksBroken);
 					if(plugin.debugMessages){
+						Bukkit.getServer().getLogger().info("BlockExplodeEvent");
 						Bukkit.getServer().getLogger().info("Saved BlockLocation");
 						Location location = b.getLocation();
 						Bukkit.getServer().getLogger().info("Location : " + "X:"+ location.getX() + ", " + "Y:"+ location.getY() + ", " + "Z:"+ location.getZ());
@@ -109,7 +116,7 @@ public class BlockEventListeners implements Listener{
 		}	
 	}
 	
-	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+	/*@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
 	public void onBlockDamage(BlockDamageEvent event){
 		Block block = event.getBlock();
 		Location location = block.getLocation();
@@ -124,13 +131,14 @@ public class BlockEventListeners implements Listener{
 			blocksBroken.add(bL);
 			plugin.setBlocksBroken(blocksBroken);
 			if(plugin.debugMessages){
+				Bukkit.getServer().getLogger().info("BlockDamageEvent");
 				Bukkit.getServer().getLogger().info("Saved BlockLocation");
 				Bukkit.getServer().getLogger().info("Location : " + "X:"+ location.getX() + ", " + "Y:"+ location.getY() + ", " + "Z:"+ location.getZ());
 				Bukkit.getServer().getLogger().info("BlockType : " + block.getType().toString());
 				Bukkit.getServer().getLogger().info("Entity : " + bL.ent);
 			}
 		}
-	}
+	}*/   // Don't think I need this, but we'll leave it here for now
 	
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void onBlockBurn(BlockBurnEvent event){
@@ -142,6 +150,7 @@ public class BlockEventListeners implements Listener{
 			blocksBroken.add(bL);
 			plugin.setBlocksBroken(blocksBroken);
 			if(plugin.debugMessages){
+				Bukkit.getServer().getLogger().info("BlockBurnEvent");
 				Bukkit.getServer().getLogger().info("Saved BlockLocation");
 				Bukkit.getServer().getLogger().info("Location : " + "X:"+ location.getX() + ", " + "Y:"+ location.getY() + ", " + "Z:"+ location.getZ());
 				Bukkit.getServer().getLogger().info("BlockType : " + block.getType().toString());
@@ -166,6 +175,7 @@ public class BlockEventListeners implements Listener{
 				blocksBroken.add(bL);
 				plugin.setBlocksBroken(blocksBroken);
 				if(plugin.debugMessages){
+					Bukkit.getServer().getLogger().info("BlockPlaceEvent");
 					Bukkit.getServer().getLogger().info("Saved BlockLocation");
 					Bukkit.getServer().getLogger().info("Location : " + "X:"+ location.getX() + ", " + "Y:"+ location.getY() + ", " + "Z:"+ location.getZ());
 					Bukkit.getServer().getLogger().info("BlockType : " + block.getType().toString());
@@ -174,6 +184,7 @@ public class BlockEventListeners implements Listener{
 			}
 		}
 	}
+	
 	
 	@EventHandler(priority = EventPriority.HIGH)
 	public void onBlockIgnite(BlockIgniteEvent event) {
@@ -184,12 +195,13 @@ public class BlockEventListeners implements Listener{
 		if((player!=null) && (!(this.banList.contains(block.getType())))){ 
 			bL = new SBlock(block, player);
 		}else{
-			bL = new SBlock(block);
+			return;
 		}
 		if(bL!=null && !plugin.containsBlockLocation(bL)){
 			blocksBroken.add(bL);
 			plugin.setBlocksBroken(blocksBroken);
 			if(plugin.debugMessages){
+				Bukkit.getServer().getLogger().info("BlockIgniteEvent");
 				Bukkit.getServer().getLogger().info("Saved BlockLocation");
 				Bukkit.getServer().getLogger().info("Location : " + "X:"+ location.getX() + ", " + "Y:"+ location.getY() + ", " + "Z:"+ location.getZ());
 				Bukkit.getServer().getLogger().info("BlockType : " + block.getType().toString());

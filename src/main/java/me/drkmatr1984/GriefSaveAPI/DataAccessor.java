@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -20,6 +21,7 @@ public class DataAccessor{
 	private Set<Material> banListConverted = new HashSet<Material>();
 	public boolean useListeners;
 	public boolean debugMessages;
+	public boolean recordBlockPlaced;
 	private Set<SBlock> blocksBroken = new HashSet<SBlock>();
 	private FileConfiguration blocks;
 	private FileConfiguration f;
@@ -42,6 +44,7 @@ public class DataAccessor{
 	    f = YamlConfiguration.loadConfiguration(file);
 	    this.useListeners = f.getBoolean("useListeners");
 	    this.debugMessages = f.getBoolean("debugMessages");
+	    this.recordBlockPlaced = f.getBoolean("recordBlockPlace");
 	    this.banList = f.getStringList("blacklist");
 	    for(Material m : convertBanList(banList)){
 	    	this.banListConverted.add(m);
@@ -50,31 +53,46 @@ public class DataAccessor{
 	}
 	
 	public void loadData(){
+		String listSerial = "";
+		int size;
 		bf = new File(plugin.getDataFolder().toString() + "/data");
 		blocksFile = new File(bf, "blocks.yml");  
-		if (bf.exists()) {
+		if (!bf.exists()) {
+			Bukkit.getServer().getLogger().info("Directory Doesn't Exist, Creating...");
 		    bf.mkdir();
 		}
 		if (!blocksFile.exists()) {
+			Bukkit.getServer().getLogger().info("Default blockdata file Doesn't Exist, Creating...");
 		    plugin.saveResource("data/blocks.yml", false);
-		}
-		blocks = YamlConfiguration.loadConfiguration(blocksFile);
-		if(blocks!=null){
-			String listSerial = blocks.getString("blocks");
-			try {
-				blocksBroken = BlockSerialization.fromBase64(listSerial);
-				plugin.setBlocksBroken(blocksBroken);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+		}else{
+			blocks = YamlConfiguration.loadConfiguration(blocksFile);
+			if(blocks!=null){
+				listSerial = blocks.getString("blocks");
+				size = blocks.getInt("size");
+				try {
+					if(!listSerial.equals("") && !listSerial.equals(null)){
+						blocksBroken = BlockSerialization.fromBase64(listSerial, size);
+						plugin.setBlocksBroken(blocksBroken);
+					}			
+				} catch (IOException e) {
+					Bukkit.getServer().getLogger().info("Can't load BlocksFile");
+					e.printStackTrace();
+				}
 			}
-		}
+		}	
 	}
 	
 	public void saveData(){
+		int size;
+		if(plugin.getBlocksBroken().isEmpty()){
+			size = 0;
+		}else{
+			size = plugin.getBlocksBroken().size();
+		}
 		if(plugin.getBlocksBroken()!=null){
 			String listSerial = BlockSerialization.toBase64(plugin.getBlocksBroken());
 			blocks.set("blocks", listSerial);
+			blocks.set("size", size);
 		}
 		if (!bf.exists()){
 			bf.mkdir();

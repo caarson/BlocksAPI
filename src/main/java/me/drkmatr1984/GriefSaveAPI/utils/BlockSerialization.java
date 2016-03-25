@@ -30,13 +30,13 @@ public class BlockSerialization {
         }        
     }
     
-    public static Set<SBlock> fromBase64(String data) throws IOException {
+    public static Set<SBlock> fromBase64(String data, int size) throws IOException {
         try {
             ByteArrayInputStream inputStream = new ByteArrayInputStream(Base64Coder.decodeLines(data));
             BukkitObjectInputStream dataInput = new BukkitObjectInputStream(inputStream);
             Set<SBlock> setBlocks = new HashSet<SBlock>();
             // Read the serialized list
-            for (int i = 0; i < setBlocks.size(); i++) {
+            for (int i = 0; i < size; i++) {
             	setBlocks.add((SBlock)dataInput.readObject());
             }
             dataInput.close();

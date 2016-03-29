@@ -13,6 +13,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import me.drkmatr1984.GriefSaveAPI.utils.BlockSerialization;
+import me.drkmatr1984.GriefSaveAPI.utils.SBlock;
 
 public class DataAccessor{
 	
@@ -67,23 +68,26 @@ public class DataAccessor{
 		}else{
 			blocks = YamlConfiguration.loadConfiguration(blocksFile);
 			if(blocks!=null){
-				listSerial = blocks.getString("blocks");
-				size = blocks.getInt("size");
-				try {
-					if(!listSerial.equals("") && !listSerial.equals(null)){
-						blocksBroken = BlockSerialization.fromBase64(listSerial, size);
-						plugin.setBlocksBroken(blocksBroken);
-					}			
-				} catch (IOException e) {
-					Bukkit.getServer().getLogger().info("Can't load BlocksFile");
-					e.printStackTrace();
-				}
+				if(!(blocks.getString("blocks") == "") && (blocks.getString("blocks") != null)){
+					listSerial = blocks.getString("blocks");
+					size = blocks.getInt("size");
+					try {
+						if(!listSerial.equals("") && !listSerial.equals(null)){
+							blocksBroken = BlockSerialization.fromBase64(listSerial, size);
+							plugin.setBlocksBroken(blocksBroken);
+						}			
+					} catch (IOException e) {
+						Bukkit.getServer().getLogger().info("Can't load BlocksFile");
+						e.printStackTrace();
+					}
+				}		
 			}
 		}	
 	}
 	
 	public void saveData(){
 		int size;
+		blocks = YamlConfiguration.loadConfiguration(blocksFile);
 		if(plugin.getBlocksBroken().isEmpty()){
 			size = 0;
 		}else{

@@ -9,6 +9,7 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import me.drkmatr1984.GriefSaveAPI.listeners.BlockEventListeners;
+import me.drkmatr1984.GriefSaveAPI.utils.SBlock;
 
 public class GriefSaveAPI extends JavaPlugin
 {
@@ -71,6 +72,14 @@ public class GriefSaveAPI extends JavaPlugin
 	  return this.blocksBroken;
   }
   
+  public boolean addToList(SBlock sb){
+	  return this.blocksBroken.add(sb);
+  }
+  
+  public boolean removeFromList(SBlock sb){
+	  return this.blocksBroken.remove(sb);
+  }
+  
   public void setBanList(Set<Material> banList){
 	  this.banList = banList;
   }
@@ -84,7 +93,7 @@ public class GriefSaveAPI extends JavaPlugin
    * */
   public boolean containsBlockLocation(SBlock bl){
 	  for(SBlock blockLocation : this.blocksBroken){
-		  if(blockLocation.mat == bl.mat && blockLocation.x == bl.x && blockLocation.y == bl.y && blockLocation.z == bl.z){
+		  if(blockLocation.mat.equals(bl.mat) && blockLocation.x == bl.x && blockLocation.y == bl.y && blockLocation.z == bl.z){
 			  return true;
 		  }
 	  }
@@ -94,5 +103,4 @@ public class GriefSaveAPI extends JavaPlugin
   public static GriefSaveAPI getInstance(){
 	  return plugin;
   }
-  
 }

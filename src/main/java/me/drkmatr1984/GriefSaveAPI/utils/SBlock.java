@@ -1,16 +1,17 @@
-package me.drkmatr1984.GriefSaveAPI;
+package me.drkmatr1984.GriefSaveAPI.utils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.CreatureSpawner;
 import org.bukkit.block.Sign;
+import org.bukkit.block.Skull;
 import org.bukkit.entity.Entity;
 import org.bukkit.material.Door;
+import me.mrCookieSlime.CSCoreLibPlugin.general.World.CustomSkull;
 
 public class SBlock implements Serializable{
 	
@@ -41,6 +42,10 @@ public class SBlock implements Serializable{
 	//Info for Storing Spawners
 	public String entityType;
 	public int delay;
+	//Info for Storing Skulls
+	public String skullType;
+	public String skullOwner = "";
+	public String customTexture = "";
 	
 	@SuppressWarnings("deprecation")
 	public SBlock(Block block, Entity entity){
@@ -78,28 +83,39 @@ public class SBlock implements Serializable{
 		if(block.getState() instanceof Sign){
 			Sign sign = (Sign)(block.getState());
 			signLines = new ArrayList<String>();
-			if(!sign.getLines().equals(null)){
+			if(!sign.getLines().equals(null) && !(sign.getLines().length <= 0)){
 				for (String line : sign.getLines()){
 					signLines.add(line);
 				}
+			}else{
+				signLines = null;
 			}			
 		}
-		if(block.getState().getData() instanceof CreatureSpawner){
-			CreatureSpawner spawner = (CreatureSpawner) block.getState().getData();
+		if(block.getState() instanceof CreatureSpawner){
+			CreatureSpawner spawner = (CreatureSpawner) block.getState();
 			entityType = spawner.getCreatureTypeName();
 			delay = spawner.getDelay();
+		}
+		if(block.getState() instanceof Skull){
+			Skull skull = (Skull) block.getState();
+			skullType = skull.getSkullType().name().toString();
+			if(skull.hasOwner()){
+				skullOwner = skull.getOwner().toString();
+				if(skullOwner.toLowerCase().equals("cscorelib")){
+					try {
+						customTexture = CustomSkull.getTexture(block);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			}
 		}
 		/*try {
 			BlockState state;
 			BlockState altState;
 			Block block1 = blockStatedata.getBlock();
 			
-			} else if (blockStatedata instanceof CreatureSpawner) {
-
-				block.setTypeIdAndData(blockStatedata.getTypeId(), blockStatedata.getData().getData(), false);
-				((CreatureSpawner) block.getState()).setSpawnedType(((CreatureSpawner) blockStatedata).getSpawnedType());
-
-			} else if (blockStatedata instanceof InventoryHolder) {
+			 else if (blockStatedata instanceof InventoryHolder) {
 
 				block.setTypeId(blockStatedata.getTypeId(), false);
 
@@ -117,16 +133,7 @@ public class SBlock implements Serializable{
 				if (altState != null) {
 					piston.setTypeIdAndData(altState.getTypeId(), altState.getData().getData(), false);
 				}
-			} else if (state.getData() instanceof Attachable) {
-
-				Block attachedBlock = block.getRelative(((Attachable) state.getData()).getAttachedFace());
-				if (attachedBlock.getTypeId() == 0) {
-					attachedBlock.setTypeId(placeholder.getId(), false);
-					TownyRegenAPI.addPlaceholder(attachedBlock);
-				}
-				block.setTypeIdAndData(state.getTypeId(), state.getData().getData(), false);
-
-			} else {
+			 else {
 
 				if (NeedsPlaceholder.contains(state.getType())) {
 					Block blockBelow = block.getRelative(BlockFace.DOWN);
@@ -183,11 +190,32 @@ public class SBlock implements Serializable{
 		if(block.getState() instanceof Sign){
 			Sign sign = (Sign)(block.getState());
 			signLines = new ArrayList<String>();
-			if(!sign.getLines().equals(null)){
+			if(!sign.getLines().equals(null) && !(sign.getLines().length <= 0)){
 				for (String line : sign.getLines()){
 					signLines.add(line);
 				}
+			}else{
+				signLines = null;
 			}			
+		}
+		if(block.getState() instanceof CreatureSpawner){
+			CreatureSpawner spawner = (CreatureSpawner) block.getState();
+			entityType = spawner.getCreatureTypeName();
+			delay = spawner.getDelay();
+		}
+		if(block.getState() instanceof Skull){
+			Skull skull = (Skull) block.getState();
+			skullType = skull.getSkullType().name().toString();
+			if(skull.hasOwner()){
+				skullOwner = skull.getOwner().toString();
+				if(skullOwner.toLowerCase().equals("cscorelib")){
+					try {
+						customTexture = CustomSkull.getTexture(block);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			}
 		}
 	}
 }

@@ -1,8 +1,9 @@
 name: GriefSaveAPI
 version: 0.1
 main: me.drkmatr1984.GriefSaveAPI.GriefSaveAPI
-
 description: An API to save blocks and their states when damage is done to them or when specified by the developer/config
+author: drkmatr1984
+softdepend: [CS-CoreLib, CSCoreLib] 
 
 commands:
   rollback:

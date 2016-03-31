@@ -1,5 +1,28 @@
-## GriefSaveAPI Config File ##
+## BlocksAPI Config File ##
+## Whether or not to use BlocksAPI's built in listeners
+## If useListeners is false, all listener values default to false ##
+## useListeners: true
+## listeners:
+##   BlockBreak: true
+##   BlockPlace: false
+##   EntityExplode: false
+##   BlockExplode: false
+##   BlockBurn: false
+##   BlockIgnite: false
+## Display debug messages in console ##
+## debugMessages: true
+## Blacklist for worlds you don't want recorded ##
+## blacklistWorlds: []
+## Blacklist for blocks you don't want recorded ##
+## blockBlacklist: []
 useListeners: true
-debugMessages: true
-recordBlockPlace: false
-blacklist: []
+listeners:
+  BlockBreak: true
+  BlockPlace: false
+  EntityExplode: false
+  BlockExplode: false
+  BlockBurn: false
+  BlockIgnite: false
+debugMessages: false
+blacklistWorlds: []
+blockBlacklist: []

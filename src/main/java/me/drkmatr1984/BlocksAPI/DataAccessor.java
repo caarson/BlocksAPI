@@ -1,4 +1,4 @@
-package me.drkmatr1984.GriefSaveAPI;
+package me.drkmatr1984.BlocksAPI;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,24 +12,30 @@ import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-import me.drkmatr1984.GriefSaveAPI.utils.BlockSerialization;
-import me.drkmatr1984.GriefSaveAPI.utils.SBlock;
+import me.drkmatr1984.BlocksAPI.utils.BlockSerialization;
+import me.drkmatr1984.BlocksAPI.utils.SBlock;
 
 public class DataAccessor{
 	
-	private GriefSaveAPI plugin;
+	private BlocksAPI plugin;
 	private List<String> banList = new ArrayList<String>();
+	public List<String> worldBanList = new ArrayList<String>();
 	private Set<Material> banListConverted = new HashSet<Material>();
 	public boolean useListeners;
 	public boolean debugMessages;
+	public boolean recordBlockBreak;
 	public boolean recordBlockPlaced;
+	public boolean recordEntityExplode;
+	public boolean recordBlockExplode;
+	public boolean recordBlockBurn;
+	public boolean recordBlockIgnite;
 	private Set<SBlock> blocksBroken = new HashSet<SBlock>();
 	private FileConfiguration blocks;
 	private FileConfiguration f;
 	private File bf;
 	private File blocksFile; 
 	
-	public DataAccessor(GriefSaveAPI plugin){
+	public DataAccessor(BlocksAPI plugin){
 		this.plugin = plugin;
 		this.bf = new File(this.plugin.getDataFolder().toString()+"/data");
 		this.blocksFile = new File(bf, "blocks.yml");
@@ -44,9 +50,24 @@ public class DataAccessor{
 	    }
 	    f = YamlConfiguration.loadConfiguration(file);
 	    this.useListeners = f.getBoolean("useListeners");
+	    if(this.useListeners){
+	    	this.recordBlockBreak = f.getBoolean("listeners.BlockBreak");
+	    	this.recordBlockPlaced = f.getBoolean("listeners.BlockPlace");
+	    	this.recordEntityExplode = f.getBoolean("listeners.EntityExplode");
+	    	this.recordBlockExplode = f.getBoolean("listeners.BlockExplode");
+	    	this.recordBlockBurn = f.getBoolean("listeners.BlockBurn");
+	    	this.recordBlockIgnite = f.getBoolean("listeners.BlockIgnite");
+	    }else{
+	    	this.recordBlockBreak = false;
+	    	this.recordBlockPlaced = false;
+	    	this.recordEntityExplode = false;
+	    	this.recordBlockExplode = false;
+	    	this.recordBlockBurn = false;
+	    	this.recordBlockIgnite = false;
+	    }	    
 	    this.debugMessages = f.getBoolean("debugMessages");
-	    this.recordBlockPlaced = f.getBoolean("recordBlockPlace");
-	    this.banList = f.getStringList("blacklist");
+	    this.worldBanList = f.getStringList("blacklistWorlds");
+	    this.banList = f.getStringList("blockBlacklist");
 	    for(Material m : convertBanList(banList)){
 	    	this.banListConverted.add(m);
 	    }
@@ -123,7 +144,13 @@ public class DataAccessor{
 		if(!banList2.equals(null)){
 			for(String s : banList2){
 				Material mat = Material.valueOf(s);
-				newBanList.add(mat);
+				if(!mat.equals(null)){
+					newBanList.add(mat);
+				}
+				/*EntityType et = EntityType.valueOf(s);
+				if(!et.equals(null)){
+					newBanList.add(et);
+				}*/
 			}
 		}
 		return newBanList;

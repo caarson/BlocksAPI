@@ -29,6 +29,7 @@ public class BlocksAPI extends JavaPlugin
   public boolean recordBlockExplode;
   public boolean recordBlockBurn;
   public boolean recordBlockIgnite;
+  public boolean recordBlockFromTo;
   public boolean useListeners;
   public boolean debugMessages;
   private DataAccessor data; 
@@ -50,6 +51,7 @@ public class BlocksAPI extends JavaPlugin
 	this.recordBlockExplode = this.data.recordBlockExplode;
 	this.recordBlockBurn = this.data.recordBlockBurn;
 	this.recordBlockIgnite = this.data.recordBlockPlaced;
+	this.recordBlockFromTo = this.data.recordBlockFromTo;
 	this.worldBanList = this.data.worldBanList;
 	getCommand("rollback").setExecutor(new BlocksAPICommands(plugin));
 	if(useListeners){
@@ -64,7 +66,12 @@ public class BlocksAPI extends JavaPlugin
   }
   
   public void setBlocksBroken(Set<SBlock> blocksBroken){
-	  this.blocksBroken = blocksBroken;
+	  this.blocksBroken = new HashSet<SBlock>();
+	  for(SBlock block : blocksBroken){
+		  if(!this.banList.contains(block.getType())){
+			  this.blocksBroken.add(block);		  
+		  }
+	  }
   }
   
   /*
@@ -76,15 +83,24 @@ public class BlocksAPI extends JavaPlugin
   }
   
   public boolean addToList(SBlock sb){
-	  return this.blocksBroken.add(sb);
+	  if(!this.banList.contains(sb.getType())){
+		  return this.blocksBroken.add(sb);
+	  }
+	  return false;
   }
   
   public boolean addToList(Block b){
-	  return this.blocksBroken.add(new SBlock(b));
+	  if(!this.banList.contains(b.getType())){
+		  return this.blocksBroken.add(new SBlock(b));
+	  }
+	  return false;  
   }
   
   public boolean addToList(Location loc){
-	  return this.blocksBroken.add(new SBlock(loc));
+	  if(!this.banList.contains(loc.getBlock().getType())){
+		  return this.blocksBroken.add(new SBlock(loc));
+	  }
+	  return false;  
   }
   
   public boolean removeFromList(SBlock sb){
@@ -126,7 +142,7 @@ public class BlocksAPI extends JavaPlugin
 	  return false;
   }
   
-  public SBlock getBlockLocation(Block block){
+  public SBlock getStoredSBlock(Block block){
 	  for(SBlock blockLocation : this.blocksBroken){
 		  if(blockLocation.mat.equals(block.getType().name().toString()) && blockLocation.x == block.getX() && blockLocation.y == block.getY() && blockLocation.z == block.getZ()){
 			  return blockLocation;

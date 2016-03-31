@@ -20,9 +20,10 @@ listeners:
   BlockBreak: true
   BlockPlace: false
   EntityExplode: false
-  BlockExplode: false
+  BlockExplode: true
   BlockBurn: false
   BlockIgnite: false
+  BlockFromTo: true
 debugMessages: false
 blacklistWorlds: []
 blockBlacklist: []

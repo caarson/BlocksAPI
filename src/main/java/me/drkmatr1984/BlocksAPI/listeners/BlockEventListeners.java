@@ -19,6 +19,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockBurnEvent;
 //import org.bukkit.event.block.BlockDamageEvent;
 import org.bukkit.event.block.BlockExplodeEvent;
+import org.bukkit.event.block.BlockFromToEvent;
 import org.bukkit.event.block.BlockIgniteEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
@@ -448,6 +449,33 @@ public class BlockEventListeners implements Listener{
 							Bukkit.getServer().getLogger().info("SkullType: " + bL.skullType);
 							Bukkit.getServer().getLogger().info("SkullOwner: " + bL.skullOwner);
 						}
+					}
+				}
+			}
+		}
+	}
+	
+	@EventHandler	 
+	public void onWaterPassThrough(BlockFromToEvent event){
+		if(plugin.recordBlockFromTo){
+			if(plugin.worldBanList.contains(event.getToBlock().getWorld().getName().toString())){
+				return;
+			}
+			if(this.banList.contains(event.getToBlock().getType())){
+				return;
+			}
+			if(Utils.isOtherAttachable(event.getToBlock().getType())){
+				SBlock bL = new SBlock(event.getToBlock());
+				if(bL!=null && !plugin.containsBlockLocation(bL)){
+					if(!plugin.addToList(bL)){
+						Bukkit.getServer().getLogger().info(ChatColor.DARK_RED + "Cannot add to List");
+					}
+					if(plugin.debugMessages){
+						Bukkit.getServer().getLogger().info("BlockFromToEvent");
+						Bukkit.getServer().getLogger().info("Saved BlockLocation");
+						Bukkit.getServer().getLogger().info("Location : " + "X:"+ bL.x + ", " + "Y:"+ bL.y + ", " + "Z:"+ bL.z);
+						Bukkit.getServer().getLogger().info("BlockType : " + bL.mat);
+						Bukkit.getServer().getLogger().info("Entity : " + bL.ent);
 					}
 				}
 			}

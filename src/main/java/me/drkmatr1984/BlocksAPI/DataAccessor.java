@@ -29,6 +29,7 @@ public class DataAccessor{
 	public boolean recordBlockExplode;
 	public boolean recordBlockBurn;
 	public boolean recordBlockIgnite;
+	public boolean recordBlockFromTo;
 	private Set<SBlock> blocksBroken = new HashSet<SBlock>();
 	private FileConfiguration blocks;
 	private FileConfiguration f;
@@ -57,6 +58,7 @@ public class DataAccessor{
 	    	this.recordBlockExplode = f.getBoolean("listeners.BlockExplode");
 	    	this.recordBlockBurn = f.getBoolean("listeners.BlockBurn");
 	    	this.recordBlockIgnite = f.getBoolean("listeners.BlockIgnite");
+	    	this.recordBlockFromTo = f.getBoolean("listeners.BlockFromTo");
 	    }else{
 	    	this.recordBlockBreak = false;
 	    	this.recordBlockPlaced = false;
@@ -64,6 +66,7 @@ public class DataAccessor{
 	    	this.recordBlockExplode = false;
 	    	this.recordBlockBurn = false;
 	    	this.recordBlockIgnite = false;
+	    	this.recordBlockFromTo = false;
 	    }	    
 	    this.debugMessages = f.getBoolean("debugMessages");
 	    this.worldBanList = f.getStringList("blacklistWorlds");

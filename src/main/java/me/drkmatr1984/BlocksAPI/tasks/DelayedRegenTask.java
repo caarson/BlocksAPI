@@ -38,7 +38,7 @@ public class DelayedRegenTask implements Runnable
 	}
 	
 	public DelayedRegenTask(Block block){
-		this.sb = BlocksAPI.getInstance().getBlockLocation(block);
+		this.sb = BlocksAPI.getInstance().getStoredSBlock(block);
 		Location l = new Location(Bukkit.getServer().getWorld(sb.world), sb.x, sb.y, sb.z);
 		this.block = l.getBlock();
 		this.mat = Material.valueOf(sb.mat);

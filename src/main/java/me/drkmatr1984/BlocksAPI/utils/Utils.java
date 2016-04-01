@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
@@ -94,5 +95,18 @@ public class Utils{
 		    }
 		}
 		return near;
+	}
+	
+	public static ArrayList<Block> getNearbyLiquids(Block block){
+		ArrayList<Block> blocks = new ArrayList<Block>();
+		for(int i = -2; i <= 2; i++){
+			Location l = block.getLocation();
+			l.add(i, i, i);
+			Block check = l.getBlock();
+			if(check.getType().equals(Material.WATER) || check.getType().equals(Material.STATIONARY_WATER)){
+				blocks.add(check);
+			}
+		}
+		return blocks;
 	}
 }

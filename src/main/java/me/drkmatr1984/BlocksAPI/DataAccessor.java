@@ -20,6 +20,7 @@ public class DataAccessor{
 	private BlocksAPI plugin;
 	private List<String> banList = new ArrayList<String>();
 	public List<String> worldBanList = new ArrayList<String>();
+	private List<String> tempWorldBanList = new ArrayList<String>();
 	private Set<Material> banListConverted = new HashSet<Material>();
 	public boolean useListeners;
 	public boolean debugMessages;
@@ -30,6 +31,7 @@ public class DataAccessor{
 	public boolean recordBlockBurn;
 	public boolean recordBlockIgnite;
 	public boolean recordBlockFromTo;
+	public boolean recordPlayerBucketEmpty;
 	private Set<SBlock> blocksBroken = new HashSet<SBlock>();
 	private FileConfiguration blocks;
 	private FileConfiguration f;
@@ -59,6 +61,7 @@ public class DataAccessor{
 	    	this.recordBlockBurn = f.getBoolean("listeners.BlockBurn");
 	    	this.recordBlockIgnite = f.getBoolean("listeners.BlockIgnite");
 	    	this.recordBlockFromTo = f.getBoolean("listeners.BlockFromTo");
+	    	this.recordPlayerBucketEmpty = f.getBoolean("listeners.PlayerBucketEmpty");;
 	    }else{
 	    	this.recordBlockBreak = false;
 	    	this.recordBlockPlaced = false;
@@ -67,9 +70,15 @@ public class DataAccessor{
 	    	this.recordBlockBurn = false;
 	    	this.recordBlockIgnite = false;
 	    	this.recordBlockFromTo = false;
+	    	this.recordPlayerBucketEmpty = false;
 	    }	    
 	    this.debugMessages = f.getBoolean("debugMessages");
-	    this.worldBanList = f.getStringList("blacklistWorlds");
+	    this.tempWorldBanList = f.getStringList("blacklistWorlds");
+	    if(!this.tempWorldBanList.isEmpty() && !this.tempWorldBanList.equals(null)){
+	    	for(String s : this.tempWorldBanList){
+	    		this.worldBanList.add(s.toLowerCase());
+	    	}
+	    }
 	    this.banList = f.getStringList("blockBlacklist");
 	    for(Material m : convertBanList(banList)){
 	    	this.banListConverted.add(m);

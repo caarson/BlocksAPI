@@ -24,6 +24,7 @@ listeners:
   BlockBurn: false
   BlockIgnite: false
   BlockFromTo: true
+  PlayerBucketEmpty: true
 debugMessages: false
 blacklistWorlds: []
 blockBlacklist: []

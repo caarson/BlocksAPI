@@ -7,6 +7,7 @@ import java.util.Set;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -23,6 +24,7 @@ import org.bukkit.event.block.BlockFromToEvent;
 import org.bukkit.event.block.BlockIgniteEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
+import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.material.Attachable;
 
 import me.drkmatr1984.BlocksAPI.BlocksAPI;
@@ -46,7 +48,7 @@ public class BlockEventListeners implements Listener{
 			Block block = event.getBlock();
 			ArrayList<SBlock> sBlocks = new ArrayList<SBlock>();
 			Entity entity = (Entity) event.getPlayer();
-			if(plugin.worldBanList.contains(block.getWorld().getName().toString())){
+			if(plugin.worldBanList.contains(block.getWorld().getName().toString().toLowerCase())){
 				return;
 			}
 			if(this.banList.contains(block.getType())){
@@ -117,7 +119,7 @@ public class BlockEventListeners implements Listener{
 			Entity entity = event.getEntity();
 			for(Block block : blocks){
 				ArrayList<SBlock> sBlocks = new ArrayList<SBlock>();
-				if(plugin.worldBanList.contains(block.getWorld().getName().toString())){
+				if(plugin.worldBanList.contains(block.getWorld().getName().toString().toLowerCase())){
 					return;
 				}
 				if(this.banList.contains(block.getType())){
@@ -188,7 +190,7 @@ public class BlockEventListeners implements Listener{
 			List<Block> blocks = event.blockList();
 			for(Block block : blocks){
 				ArrayList<SBlock> sBlocks = new ArrayList<SBlock>();
-				if(plugin.worldBanList.contains(block.getWorld().getName().toString())){
+				if(plugin.worldBanList.contains(block.getWorld().getName().toString().toLowerCase())){
 					return;
 				}
 				if(this.banList.contains(block.getType())){
@@ -266,7 +268,7 @@ public class BlockEventListeners implements Listener{
 		if(plugin.recordBlockBurn){
 			Block block = event.getBlock();
 			ArrayList<SBlock> sBlocks = new ArrayList<SBlock>();
-			if(plugin.worldBanList.contains(block.getWorld().getName().toString())){
+			if(plugin.worldBanList.contains(block.getWorld().getName().toString().toLowerCase())){
 				return;
 			}
 			if(this.banList.contains(block.getType())){
@@ -320,7 +322,7 @@ public class BlockEventListeners implements Listener{
 			Block block = event.getBlock();
 			ArrayList<SBlock> sBlocks = new ArrayList<SBlock>();
 			Entity entity = (Entity) event.getPlayer();
-			if(plugin.worldBanList.contains(block.getWorld().getName().toString())){
+			if(plugin.worldBanList.contains(block.getWorld().getName().toString().toLowerCase())){
 				return;
 			}
 			if(this.banList.contains(block.getType())){
@@ -391,7 +393,7 @@ public class BlockEventListeners implements Listener{
 			Block block = event.getBlock();
 			ArrayList<SBlock> sBlocks = new ArrayList<SBlock>();
 			Entity entity = (Entity) event.getPlayer();
-			if(plugin.worldBanList.contains(block.getWorld().getName().toString())){
+			if(plugin.worldBanList.contains(block.getWorld().getName().toString().toLowerCase())){
 				return;
 			}
 			if(this.banList.contains(block.getType())){
@@ -458,18 +460,16 @@ public class BlockEventListeners implements Listener{
 	@EventHandler	 
 	public void onWaterPassThrough(BlockFromToEvent event){
 		if(plugin.recordBlockFromTo){
-			if(plugin.worldBanList.contains(event.getToBlock().getWorld().getName().toString())){
+			if(plugin.worldBanList.contains(event.getToBlock().getWorld().getName().toString().toLowerCase())){
 				return;
 			}
-			if(this.banList.contains(event.getToBlock().getType())){
-				return;
-			}
-			if(Utils.isOtherAttachable(event.getToBlock().getType())){
+			if(Utils.isOtherAttachable(event.getToBlock().getType()) || event.getToBlock().getState() instanceof Attachable){
 				SBlock bL = new SBlock(event.getToBlock());
 				if(bL!=null && !plugin.containsBlockLocation(bL)){
-					if(!plugin.addToList(bL)){
-						Bukkit.getServer().getLogger().info(ChatColor.DARK_RED + "Cannot add to List");
-					}
+					if(!this.banList.contains(event.getToBlock().getType()))
+						if(!plugin.addToList(bL)){
+							Bukkit.getServer().getLogger().info(ChatColor.DARK_RED + "Cannot add to List");
+						}
 					if(plugin.debugMessages){
 						Bukkit.getServer().getLogger().info("BlockFromToEvent");
 						Bukkit.getServer().getLogger().info("Saved BlockLocation");
@@ -477,6 +477,61 @@ public class BlockEventListeners implements Listener{
 						Bukkit.getServer().getLogger().info("BlockType : " + bL.mat);
 						Bukkit.getServer().getLogger().info("Entity : " + bL.ent);
 					}
+				}
+			}
+			for(Block b : Utils.getNearbyLiquids(event.getBlock())){
+				SBlock breaker = new SBlock(b);
+				if(!this.banList.contains(breaker.getType()))
+					if(!plugin.addToList(breaker)){
+						Bukkit.getServer().getLogger().info(ChatColor.DARK_RED + "Cannot add to List");
+					}
+			}
+		}
+	}
+	
+	@EventHandler
+	public void onPlayerBucketEvent(PlayerBucketEmptyEvent event){
+		if(plugin.recordPlayerBucketEmpty){
+			Entity entity = (Entity) event.getPlayer();
+			if (event.getBucket() != null){
+				Block block = event.getBlockClicked();
+				SBlock bL = null;
+				SBlock uBL = null;
+				Location waterBlock = block.getRelative(event.getBlockFace()).getLocation();
+				for(BlockFace face : BlockFace.values()){
+					if(!face.equals(BlockFace.SELF) && !face.equals(BlockFace.DOWN)){
+						if(block.getRelative(face).getType().equals(Material.WATER) || block.getRelative(face).getType().equals(Material.LAVA)){
+							waterBlock = block.getRelative(face).getLocation();
+						}
+					}
+				}
+				if(entity!=null){
+					if(!this.banList.contains(event.getBlockClicked().getType()))
+						bL = new SBlock(block, entity);
+					if(!this.banList.contains((event.getBlockClicked().getLocation().add(0, 1, 0)).getBlock().getType()))
+						uBL = new SBlock(waterBlock, entity);
+				}else{
+					if(!this.banList.contains(event.getBlockClicked().getType()))
+						bL = new SBlock(block);
+					if(!this.banList.contains((event.getBlockClicked().getLocation().add(0, 1, 0)).getBlock().getType()))
+						uBL = new SBlock(waterBlock);
+				}
+				if(bL!=null && !plugin.containsBlockLocation(bL)){
+					if(!plugin.addToList(bL)){
+						Bukkit.getServer().getLogger().info(ChatColor.DARK_RED + "Cannot add to List");
+					}
+				}
+				if(uBL!=null && !plugin.containsBlockLocation(uBL)){
+					if(!plugin.addToList(uBL)){
+						Bukkit.getServer().getLogger().info(ChatColor.DARK_RED + "Cannot add to List");
+					}
+				}
+				if(plugin.debugMessages){
+					Bukkit.getServer().getLogger().info("PlayerBucketEmptyEvent");
+					Bukkit.getServer().getLogger().info("Saved BlockLocation");
+					Bukkit.getServer().getLogger().info("Location : " + "X:"+ bL.x + ", " + "Y:"+ bL.y + ", " + "Z:"+ bL.z);
+					Bukkit.getServer().getLogger().info("BlockType : " + bL.mat);
+					Bukkit.getServer().getLogger().info("Entity : " + bL.ent);
 				}
 			}
 		}

@@ -6,9 +6,11 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -30,6 +32,7 @@ public class BlocksAPI extends JavaPlugin
   public boolean recordBlockBurn;
   public boolean recordBlockIgnite;
   public boolean recordBlockFromTo;
+  public boolean recordPlayerBucketEmpty;
   public boolean useListeners;
   public boolean debugMessages;
   private DataAccessor data; 
@@ -52,6 +55,7 @@ public class BlocksAPI extends JavaPlugin
 	this.recordBlockBurn = this.data.recordBlockBurn;
 	this.recordBlockIgnite = this.data.recordBlockPlaced;
 	this.recordBlockFromTo = this.data.recordBlockFromTo;
+	this.recordPlayerBucketEmpty = this.data.recordPlayerBucketEmpty;
 	this.worldBanList = this.data.worldBanList;
 	getCommand("rollback").setExecutor(new BlocksAPICommands(plugin));
 	if(useListeners){
@@ -129,7 +133,7 @@ public class BlocksAPI extends JavaPlugin
   public boolean containsBlockLocation(SBlock bl){
 	  for(SBlock blockLocation : this.blocksBroken){
 		  //if(blockLocation.type.equals("block")){
-			  if(blockLocation.mat.equals(bl.mat) && blockLocation.x == bl.x && blockLocation.y == bl.y && blockLocation.z == bl.z){
+			  if(blockLocation.mat.equals(bl.mat) && blockLocation.world.equals(bl.world) && blockLocation.x == bl.x && blockLocation.y == bl.y && blockLocation.z == bl.z){
 				  return true;
 			  }
 		  //} 
@@ -144,11 +148,46 @@ public class BlocksAPI extends JavaPlugin
   
   public SBlock getStoredSBlock(Block block){
 	  for(SBlock blockLocation : this.blocksBroken){
-		  if(blockLocation.mat.equals(block.getType().name().toString()) && blockLocation.x == block.getX() && blockLocation.y == block.getY() && blockLocation.z == block.getZ()){
+		  if(blockLocation.world.equals(block.getWorld().getName().toString()) && blockLocation.x == block.getX() && blockLocation.y == block.getY() && blockLocation.z == block.getZ()){
 			  return blockLocation;
 		  } 
 	  }
 	  return null;
+  }
+  
+  public SBlock getStoredSBlock(Location loc){
+	  for(SBlock blockLocation : this.blocksBroken){
+		  if(blockLocation.world.equals(loc.getWorld().getName().toString()) && blockLocation.x == loc.getX() && blockLocation.y == loc.getY() && blockLocation.z == loc.getZ()){
+			  return blockLocation;
+		  } 
+	  }
+	  return null;
+  }
+  
+  public ArrayList<Block> getBlocksBrokenbyEntity(Entity e){
+	  ArrayList<Block> blocks = new ArrayList<Block>();
+	  for(SBlock blockLocation : this.blocksBroken){
+		  if(!blockLocation.ent.equals(null)){
+			  if(blockLocation.ent.equals(e.getUniqueId())){
+				  Location loc = new Location(Bukkit.getServer().getWorld(blockLocation.world), blockLocation.x, blockLocation.y, blockLocation.z);
+				  blocks.add(loc.getBlock());
+			  }
+		  }
+	  }
+	  return blocks;
+  }
+  
+  public ArrayList<SBlock> getSBlocksBrokenbyEntity(Entity e){
+	  ArrayList<SBlock> blocks = new ArrayList<SBlock>();
+	  for(SBlock blockLocation : this.blocksBroken){
+		  if(!blockLocation.ent.equals(null)){
+			  if(blockLocation.ent.equals(e.getUniqueId())){
+				  Location loc = new Location(Bukkit.getServer().getWorld(blockLocation.world), blockLocation.x, blockLocation.y, blockLocation.z);
+				  blocks.add(getStoredSBlock(loc));
+			  }
+		  }
+	  }
+	  return blocks;
   }
   
   public static BlocksAPI getInstance(){

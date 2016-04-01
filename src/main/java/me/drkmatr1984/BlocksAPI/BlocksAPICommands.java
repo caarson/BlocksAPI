@@ -9,6 +9,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.material.Attachable;
 import org.bukkit.material.PistonExtensionMaterial;
 
 import me.drkmatr1984.BlocksAPI.tasks.DelayedRegenTask;
@@ -36,9 +37,9 @@ public class BlocksAPICommands implements org.bukkit.command.CommandExecutor
 		    		BlockState blockState = bl.getState();
 		    		Material mat = Material.valueOf(sb.mat);
 		    		bl.setTypeIdAndData(mat.getId(), sb.data, true);
-		    		if(Utils.isOtherAttachable(mat) || mat.equals(Material.CACTUS) || mat.equals(Material.SUGAR_CANE_BLOCK) || blockState.getData() instanceof PistonExtensionMaterial){
+		    		if(Utils.isOtherAttachable(mat) || mat.equals(Material.CACTUS) || mat.equals(Material.SUGAR_CANE_BLOCK) || blockState.getData() instanceof PistonExtensionMaterial || blockState instanceof Attachable){
 		    			plugin.getServer().getScheduler().scheduleAsyncDelayedTask(plugin, new DelayedRegenTask(sb) {
-		    			}, 2L);
+		    			}, 3L);
 		    		}else{
 		    			plugin.getServer().getScheduler().scheduleAsyncDelayedTask(plugin, new DelayedRegenTask(sb) {
 		    			}, 1L);

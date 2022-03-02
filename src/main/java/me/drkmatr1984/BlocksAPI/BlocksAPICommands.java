@@ -32,15 +32,15 @@ public class BlocksAPICommands implements org.bukkit.command.CommandExecutor
 		    if (cmd.getName().equalsIgnoreCase("rollback")) {
 		    	ArrayList<SBlock> blocks = (ArrayList<SBlock>) Utils.setToList(plugin.getBlocksBroken());
 		    	for(SBlock sb : blocks){
-		    		Location l = new Location(Bukkit.getServer().getWorld(sb.world),sb.x,sb.y,sb.z);
-		    		Block bl = l.getBlock();
-		    		BlockState blockState = bl.getState();
+		    		Location location = new Location(Bukkit.getServer().getWorld(sb.world),sb.x,sb.y,sb.z);
+		    		Block block = location.getBlock();
+		    		BlockState blockState = block.getState();
 		    		Material mat = Material.valueOf(sb.mat);
-		    		bl.setTypeIdAndData(mat.getId(), sb.data, true);
-		    		if(Utils.isOtherAttachable(mat) || mat.equals(Material.CACTUS) || mat.equals(Material.SUGAR_CANE_BLOCK) || blockState.getData() instanceof PistonExtensionMaterial || blockState instanceof Attachable){
+					block.setType(mat.createBlockData().getMaterial(), true);
+		    		if (Utils.isOtherAttachable(mat) || mat.equals(Material.CACTUS) || mat.equals(Material.SUGAR_CANE) || blockState.getData() instanceof PistonExtensionMaterial || blockState instanceof Attachable){
 		    			plugin.getServer().getScheduler().scheduleAsyncDelayedTask(plugin, new DelayedRegenTask(sb) {
 		    			}, 3L);
-		    		}else{
+		    		} else {
 		    			plugin.getServer().getScheduler().scheduleAsyncDelayedTask(plugin, new DelayedRegenTask(sb) {
 		    			}, 1L);
 		    		}		    		

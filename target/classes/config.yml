@@ -1,0 +1,30 @@
+## BlocksAPI Config File ##
+## Whether or not to use BlocksAPI's built in listeners
+## If useListeners is false, all listener values default to false ##
+## useListeners: true
+## listeners:
+##   BlockBreak: true
+##   BlockPlace: false
+##   EntityExplode: false
+##   BlockExplode: false
+##   BlockBurn: false
+##   BlockIgnite: false
+## Display debug messages in console ##
+## debugMessages: true
+## Blacklist for worlds you don't want recorded ##
+## blacklistWorlds: []
+## Blacklist for blocks you don't want recorded ##
+## blockBlacklist: []
+useListeners: true
+listeners:
+  BlockBreak: true
+  BlockPlace: false
+  EntityExplode: false
+  BlockExplode: true
+  BlockBurn: false
+  BlockIgnite: false
+  BlockFromTo: true
+  PlayerBucketEmpty: true
+debugMessages: false
+blacklistWorlds: []
+blockBlacklist: []

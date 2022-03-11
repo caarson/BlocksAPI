@@ -38,7 +38,7 @@ public class DelayedRegenTask implements Runnable
 	}
 	
 	public DelayedRegenTask(Block block){
-		this.sb = BlocksAPI.getInstance().getStoredSBlock(block);
+		this.sb = BlocksAPI.getInstance().getStoredSBlock(block); //
 		Location l = new Location(Bukkit.getServer().getWorld(sb.world), sb.x, sb.y, sb.z);
 		this.block = l.getBlock();
 		this.mat = Material.valueOf(sb.mat);
@@ -47,21 +47,27 @@ public class DelayedRegenTask implements Runnable
     @Override
 	@SuppressWarnings("deprecation")
 	public void run() {
-    	//if(sb.type.equals("block")){
-	    	block.setTypeIdAndData(mat.getId(), sb.data, true);
-			BlockState blockState = block.getState();
-			if(blockState.getData() instanceof Door){
+    	//if(sb.type.equals("block")){ // stays in the code (do not erase for debug)
+		block.setType(mat, true);
+		BlockState blockState = block.getState();
+		blockState.setRawData(sb.data);
+
+		System.out.println(mat);
+		System.out.println(sb.data);
+
+
+		if (blockState.getData() instanceof Door){
 				Door door = (Door) blockState.getData(); 
 		    	Location topLoc = new Location(Bukkit.getServer().getWorld(sb.doorTopWorld),sb.doorTopX,sb.doorTopY,sb.doorTopZ);
 			   	Location botLoc = new Location(Bukkit.getServer().getWorld(sb.doorBotWorld),sb.doorBotX,sb.doorBotY,sb.doorBotZ);
 		    	Block topHalf = topLoc.getBlock();
 			   	Block bottomHalf = botLoc.getBlock();
 		    	door.setTopHalf(true);
-				topHalf.setTypeIdAndData(mat.getId(), sb.doorTopData, false);
+				//topHalf.setTypeIdAndData(mat.getId(), sb.doorTopData, false);
 				door.setTopHalf(false);
-				bottomHalf.setTypeIdAndData(mat.getId(), sb.doorBotData, false);
+				//bottomHalf.setTypeIdAndData(mat.getId(), sb.doorBotData, false);
 			}
-			if(blockState instanceof Sign){
+			if (blockState instanceof Sign){
 				if(!sb.signLines.isEmpty() && !sb.signLines.equals(null)){
 					Sign sign = (Sign) blockState;
 					int i = 0;
@@ -100,11 +106,11 @@ public class DelayedRegenTask implements Runnable
 				extension.setFacingDirection(BlockFace.valueOf(sb.face));
 				extension.setSticky(sb.isSticky);
 				Block piston = (blockState.getBlock()).getRelative(extension.getAttachedFace());
-				piston.setTypeIdAndData(mat.getId(), sb.pistonByte, false);
+				//piston.setTypeIdAndData(mat.getId(), sb.pistonByte, false);
 			}
 			if(blockState instanceof InventoryHolder) {
 				Inventory container = ((InventoryHolder) blockState).getInventory();
-				(blockState.getBlock()).setData(sb.inventoryData);
+				///(blockState.getBlock()).setData(sb.inventoryData);
 				ItemStack[] items;
 				try {
 					items = InventoryUtil.stacksFromBase64(sb.inventory);
@@ -122,7 +128,7 @@ public class DelayedRegenTask implements Runnable
 			}
 			if(Utils.isCrops(blockState.getType())){
 				Block blockBelow = block.getRelative(BlockFace.DOWN);
-				blockBelow.setType(Material.SOIL, true);
+				//blockBelow.setType(Material.SOIL, true);
 			}
     	//}
     	/*if(sb.type.equals("itemframe")){

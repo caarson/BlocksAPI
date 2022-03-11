@@ -39,30 +39,30 @@ public class Utils{
 	public static boolean isOtherAttachable(Material mat){
 		switch(mat){
 			case SNOW: return true;
-			case LONG_GRASS: return true;
-			case YELLOW_FLOWER: return true;
-			case RED_ROSE: return true;
-			case CARPET: return true;
+			case LEGACY_LONG_GRASS: return true;
+			case LEGACY_YELLOW_FLOWER: return true;
+			case LEGACY_RED_ROSE: return true;
+			case LEGACY_CARPET: return true;
 			case DEAD_BUSH: return true;
-			case RAILS: return true;
+			case LEGACY_RAILS: return true;
 			case ACTIVATOR_RAIL: return true;
 			case DETECTOR_RAIL: return true;
 			case POWERED_RAIL: return true;
 			case REDSTONE_WIRE: return true;
-			case DOUBLE_PLANT: return true;
+			case LEGACY_DOUBLE_PLANT: return true;
 			case FLOWER_POT: return true;
-			case DIODE_BLOCK_OFF: return true;
-			case REDSTONE_COMPARATOR_OFF: return true;
-			case DIODE_BLOCK_ON: return true;
-			case REDSTONE_COMPARATOR_ON: return true;
-			case WOOD_PLATE: return true;
-			case STONE_PLATE: return true;
+			case LEGACY_DIODE_BLOCK_OFF: return true;
+			case LEGACY_REDSTONE_COMPARATOR_OFF: return true;
+			case LEGACY_DIODE_BLOCK_ON: return true;
+			case LEGACY_REDSTONE_COMPARATOR_ON: return true;
+			case LEGACY_WOOD_PLATE: return true;
+			case LEGACY_STONE_PLATE: return true;
 			case POTATO: return true;
 			case CARROT: return true;
-			case BEETROOT_BLOCK: return true;
+			case LEGACY_BEETROOT_BLOCK:K: return true;
 			case MELON_STEM: return true;
 			case PUMPKIN_STEM: return true;
-			case CROPS: return true;
+			case LEGACY_CROPS: return true;
 			case BROWN_MUSHROOM: return true;
 			case RED_MUSHROOM: return true;
 			case CHORUS_PLANT: return true;
@@ -76,10 +76,10 @@ public class Utils{
 		switch(mat){
 			case POTATO: return true;
 			case CARROT: return true;
-			case BEETROOT_BLOCK: return true;
+			case LEGACY_BEETROOT_BLOCK:K: return true;
 			case MELON_STEM: return true;
 			case PUMPKIN_STEM: return true;
-			case CROPS: return true;
+			case LEGACY_CROPS: return true;
 			default: break;
 		}
 		return false;
@@ -103,7 +103,7 @@ public class Utils{
 			Location l = block.getLocation();
 			l.add(i, i, i);
 			Block check = l.getBlock();
-			if(check.getType().equals(Material.WATER) || check.getType().equals(Material.STATIONARY_WATER)){
+			if(check.getType().equals(Material.WATER) || check.getType().equals(Material.LEGACY_STATIONARY_WATER)){
 				blocks.add(check);
 			}
 		}

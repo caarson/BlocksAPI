@@ -123,7 +123,7 @@ public class DataAccessor{
 		blocks = YamlConfiguration.loadConfiguration(blocksFile);
 		if(plugin.getBlocksBroken().isEmpty()){
 			size = 0;
-		}else{
+		} else {
 			size = plugin.getBlocksBroken().size();
 		}
 		if(plugin.getBlocksBroken()!=null){

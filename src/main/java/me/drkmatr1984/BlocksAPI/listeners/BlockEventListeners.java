@@ -72,11 +72,11 @@ public class BlockEventListeners implements Listener{
 					sBlocks.add(new SBlock((block.getRelative(BlockFace.UP))));
 				}
 			}
-			if((block.getRelative(BlockFace.UP)).getType().equals(Material.CACTUS) || (block.getRelative(BlockFace.UP)).getType().equals(Material.SUGAR_CANE_BLOCK) || (block.getRelative(BlockFace.UP)).getType().equals(Material.CHORUS_PLANT) || (block.getRelative(BlockFace.UP)).getType().equals(Material.CHORUS_FLOWER)){
+			if((block.getRelative(BlockFace.UP)).getType().equals(Material.CACTUS) || (block.getRelative(BlockFace.UP)).getType().equals(Material.LEGACY_SUGAR_CANE_BLOCK) || (block.getRelative(BlockFace.UP)).getType().equals(Material.CHORUS_PLANT) || (block.getRelative(BlockFace.UP)).getType().equals(Material.CHORUS_FLOWER)){
 				Block up = block.getRelative(BlockFace.UP);
 				do
 				{
-					if(up.getType().equals(Material.CACTUS) || up.getType().equals(Material.SUGAR_CANE_BLOCK) || up.getType().equals(Material.CHORUS_PLANT) || up.getType().equals(Material.CHORUS_FLOWER)){
+					if(up.getType().equals(Material.CACTUS) || up.getType().equals(Material.LEGACY_SUGAR_CANE_BLOCK) || up.getType().equals(Material.CHORUS_PLANT) || up.getType().equals(Material.CHORUS_FLOWER)){
 						if(entity!=null){
 							sBlocks.add(new SBlock(up, entity));
 						}else{
@@ -84,7 +84,7 @@ public class BlockEventListeners implements Listener{
 						}
 					}
 					up = ((up.getLocation()).add(0,1,0)).getBlock();
-				}while(up.getType().equals(Material.CACTUS) || up.getType().equals(Material.SUGAR_CANE_BLOCK) || up.getType().equals(Material.CHORUS_PLANT) || up.getType().equals(Material.CHORUS_FLOWER));
+				}while(up.getType().equals(Material.CACTUS) || up.getType().equals(Material.LEGACY_SUGAR_CANE_BLOCK) || up.getType().equals(Material.CHORUS_PLANT) || up.getType().equals(Material.CHORUS_FLOWER));
 			}
 			if(entity!=null){
 				sBlocks.add(new SBlock(block, entity));
@@ -111,7 +111,7 @@ public class BlockEventListeners implements Listener{
 			}
 		}
 	}
-	
+
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
 	public void onEntityExplode(EntityExplodeEvent event) {
 		if(plugin.recordEntityExplode){
@@ -143,11 +143,11 @@ public class BlockEventListeners implements Listener{
 						sBlocks.add(new SBlock((block.getRelative(BlockFace.UP))));
 					}
 				}
-				if((block.getRelative(BlockFace.UP)).getType().equals(Material.CACTUS) || (block.getRelative(BlockFace.UP)).getType().equals(Material.SUGAR_CANE_BLOCK) || (block.getRelative(BlockFace.UP)).getType().equals(Material.CHORUS_PLANT) || (block.getRelative(BlockFace.UP)).getType().equals(Material.CHORUS_FLOWER)){
+				if((block.getRelative(BlockFace.UP)).getType().equals(Material.CACTUS) || (block.getRelative(BlockFace.UP)).getType().equals(Material.LEGACY_SUGAR_CANE_BLOCK) || (block.getRelative(BlockFace.UP)).getType().equals(Material.CHORUS_PLANT) || (block.getRelative(BlockFace.UP)).getType().equals(Material.CHORUS_FLOWER)){
 					Block up = block.getRelative(BlockFace.UP);
 					do
 					{
-						if(up.getType().equals(Material.CACTUS) || up.getType().equals(Material.SUGAR_CANE_BLOCK) || up.getType().equals(Material.CHORUS_PLANT) || up.getType().equals(Material.CHORUS_FLOWER)){
+						if(up.getType().equals(Material.CACTUS) || up.getType().equals(Material.LEGACY_SUGAR_CANE_BLOCK) || up.getType().equals(Material.CHORUS_PLANT) || up.getType().equals(Material.CHORUS_FLOWER)){
 							if(entity!=null){
 								sBlocks.add(new SBlock(up, entity));
 							}else{
@@ -155,7 +155,7 @@ public class BlockEventListeners implements Listener{
 							}
 						}
 						up = ((up.getLocation()).add(0,1,0)).getBlock();
-					}while(up.getType().equals(Material.CACTUS) || up.getType().equals(Material.SUGAR_CANE_BLOCK) || up.getType().equals(Material.CHORUS_PLANT) || up.getType().equals(Material.CHORUS_FLOWER));
+					}while(up.getType().equals(Material.CACTUS) || up.getType().equals(Material.LEGACY_SUGAR_CANE_BLOCK) || up.getType().equals(Material.CHORUS_PLANT) || up.getType().equals(Material.CHORUS_FLOWER));
 				}
 				if(entity!=null){
 					sBlocks.add(new SBlock(block, entity));
@@ -181,9 +181,9 @@ public class BlockEventListeners implements Listener{
 					}
 				}
 			}
-		}	
+		}
 	}
-	
+
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
 	public void onBlockExplode(BlockExplodeEvent event) {
 		if(plugin.recordBlockExplode){
@@ -206,15 +206,15 @@ public class BlockEventListeners implements Listener{
 				if(Utils.isOtherAttachable((block.getRelative(BlockFace.UP)).getType())){
 					sBlocks.add(new SBlock((block.getRelative(BlockFace.UP))));
 				}
-				if((block.getRelative(BlockFace.UP)).getType().equals(Material.CACTUS) || (block.getRelative(BlockFace.UP)).getType().equals(Material.SUGAR_CANE_BLOCK) || (block.getRelative(BlockFace.UP)).getType().equals(Material.CHORUS_PLANT) || (block.getRelative(BlockFace.UP)).getType().equals(Material.CHORUS_FLOWER)){
+				if((block.getRelative(BlockFace.UP)).getType().equals(Material.CACTUS) || (block.getRelative(BlockFace.UP)).getType().equals(Material.LEGACY_SUGAR_CANE_BLOCK) || (block.getRelative(BlockFace.UP)).getType().equals(Material.CHORUS_PLANT) || (block.getRelative(BlockFace.UP)).getType().equals(Material.CHORUS_FLOWER)){
 					Block up = block.getRelative(BlockFace.UP);
 					do
 					{
-						if(up.getType().equals(Material.CACTUS) || up.getType().equals(Material.SUGAR_CANE_BLOCK) || up.getType().equals(Material.CHORUS_PLANT) || up.getType().equals(Material.CHORUS_FLOWER)){
+						if(up.getType().equals(Material.CACTUS) || up.getType().equals(Material.LEGACY_SUGAR_CANE_BLOCK) || up.getType().equals(Material.CHORUS_PLANT) || up.getType().equals(Material.CHORUS_FLOWER)){
 							sBlocks.add(new SBlock(up));
 						}
 						up = ((up.getLocation()).add(0,1,0)).getBlock();
-					}while(up.getType().equals(Material.CACTUS) || up.getType().equals(Material.SUGAR_CANE_BLOCK) || up.getType().equals(Material.CHORUS_PLANT) || up.getType().equals(Material.CHORUS_FLOWER));
+					}while(up.getType().equals(Material.CACTUS) || up.getType().equals(Material.LEGACY_SUGAR_CANE_BLOCK) || up.getType().equals(Material.CHORUS_PLANT) || up.getType().equals(Material.CHORUS_FLOWER));
 				}
 				sBlocks.add(new SBlock(block));
 				for(SBlock bL : sBlocks){
@@ -238,14 +238,14 @@ public class BlockEventListeners implements Listener{
 			}
 		}
 	}
-	
+
 	/*@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
 	public void onBlockDamage(BlockDamageEvent event){
 		Block block = event.getBlock();
 		Location location = block.getLocation();
-		Player player = event.getPlayer();		
+		Player player = event.getPlayer();
 		SBlock bL;
-		if((player!=null) && (!(this.banList.contains(block.getType())))){ 
+		if((player!=null) && (!(this.banList.contains(block.getType())))){
 			bL = new SBlock(block, (Entity)player);
 		}else{
 			bL = new SBlock(block);
@@ -262,7 +262,7 @@ public class BlockEventListeners implements Listener{
 			}
 		}
 	}*/   // Don't think I need this, but we'll leave it here for now
-	
+
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void onBlockBurn(BlockBurnEvent event){
 		if(plugin.recordBlockBurn){
@@ -284,15 +284,15 @@ public class BlockEventListeners implements Listener{
 			if(Utils.isOtherAttachable((block.getRelative(BlockFace.UP)).getType())){
 				sBlocks.add(new SBlock((block.getRelative(BlockFace.UP))));
 			}
-			if((block.getRelative(BlockFace.UP)).getType().equals(Material.CACTUS) || (block.getRelative(BlockFace.UP)).getType().equals(Material.SUGAR_CANE_BLOCK) || (block.getRelative(BlockFace.UP)).getType().equals(Material.CHORUS_PLANT) || (block.getRelative(BlockFace.UP)).getType().equals(Material.CHORUS_FLOWER)){
+			if((block.getRelative(BlockFace.UP)).getType().equals(Material.CACTUS) || (block.getRelative(BlockFace.UP)).getType().equals(Material.LEGACY_SUGAR_CANE_BLOCK) || (block.getRelative(BlockFace.UP)).getType().equals(Material.CHORUS_PLANT) || (block.getRelative(BlockFace.UP)).getType().equals(Material.CHORUS_FLOWER)){
 				Block up = block.getRelative(BlockFace.UP);
 				do
 				{
-					if(up.getType().equals(Material.CACTUS) || up.getType().equals(Material.SUGAR_CANE_BLOCK) || up.getType().equals(Material.CHORUS_PLANT) || up.getType().equals(Material.CHORUS_FLOWER)){
+					if(up.getType().equals(Material.CACTUS) || up.getType().equals(Material.LEGACY_SUGAR_CANE_BLOCK) || up.getType().equals(Material.CHORUS_PLANT) || up.getType().equals(Material.CHORUS_FLOWER)){
 						sBlocks.add(new SBlock(up));
 					}
 					up = ((up.getLocation()).add(0,1,0)).getBlock();
-				}while(up.getType().equals(Material.CACTUS) || up.getType().equals(Material.SUGAR_CANE_BLOCK) || up.getType().equals(Material.CHORUS_PLANT) || up.getType().equals(Material.CHORUS_FLOWER));
+				}while(up.getType().equals(Material.CACTUS) || up.getType().equals(Material.LEGACY_SUGAR_CANE_BLOCK) || up.getType().equals(Material.CHORUS_PLANT) || up.getType().equals(Material.CHORUS_FLOWER));
 			}
 			sBlocks.add(new SBlock(block));
 			for(SBlock bL : sBlocks){
@@ -315,7 +315,7 @@ public class BlockEventListeners implements Listener{
 			}
 		}
 	}
-	
+
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void onBlockPlace(BlockPlaceEvent event) {
 		if(plugin.recordBlockPlaced){
@@ -346,11 +346,11 @@ public class BlockEventListeners implements Listener{
 					sBlocks.add(new SBlock((block.getRelative(BlockFace.UP))));
 				}
 			}
-			if((block.getRelative(BlockFace.UP)).getType().equals(Material.CACTUS) || (block.getRelative(BlockFace.UP)).getType().equals(Material.SUGAR_CANE_BLOCK) || (block.getRelative(BlockFace.UP)).getType().equals(Material.CHORUS_PLANT) || (block.getRelative(BlockFace.UP)).getType().equals(Material.CHORUS_FLOWER)){
+			if((block.getRelative(BlockFace.UP)).getType().equals(Material.CACTUS) || (block.getRelative(BlockFace.UP)).getType().equals(Material.LEGACY_SUGAR_CANE_BLOCK) || (block.getRelative(BlockFace.UP)).getType().equals(Material.CHORUS_PLANT) || (block.getRelative(BlockFace.UP)).getType().equals(Material.CHORUS_FLOWER)){
 				Block up = block.getRelative(BlockFace.UP);
 				do
 				{
-					if(up.getType().equals(Material.CACTUS) || up.getType().equals(Material.SUGAR_CANE_BLOCK) || up.getType().equals(Material.CHORUS_PLANT) || up.getType().equals(Material.CHORUS_FLOWER)){
+					if(up.getType().equals(Material.CACTUS) || up.getType().equals(Material.LEGACY_SUGAR_CANE_BLOCK) || up.getType().equals(Material.CHORUS_PLANT) || up.getType().equals(Material.CHORUS_FLOWER)){
 						if(entity!=null){
 							sBlocks.add(new SBlock(up, entity));
 						}else{
@@ -358,7 +358,7 @@ public class BlockEventListeners implements Listener{
 						}
 					}
 					up = ((up.getLocation()).add(0,1,0)).getBlock();
-				}while(up.getType().equals(Material.CACTUS) || up.getType().equals(Material.SUGAR_CANE_BLOCK) || up.getType().equals(Material.CHORUS_PLANT) || up.getType().equals(Material.CHORUS_FLOWER));
+				}while(up.getType().equals(Material.CACTUS) || up.getType().equals(Material.LEGACY_SUGAR_CANE_BLOCK) || up.getType().equals(Material.CHORUS_PLANT) || up.getType().equals(Material.CHORUS_FLOWER));
 			}
 			if(entity!=null){
 				sBlocks.add(new SBlock(block, entity));
@@ -385,8 +385,8 @@ public class BlockEventListeners implements Listener{
 			}
 		}
 	}
-	
-	
+
+
 	@EventHandler(priority = EventPriority.HIGH)
 	public void onBlockIgnite(BlockIgniteEvent event) {
 		if(plugin.recordBlockIgnite){
@@ -417,11 +417,11 @@ public class BlockEventListeners implements Listener{
 					sBlocks.add(new SBlock((block.getRelative(BlockFace.UP))));
 				}
 			}
-			if((block.getRelative(BlockFace.UP)).getType().equals(Material.CACTUS) || (block.getRelative(BlockFace.UP)).getType().equals(Material.SUGAR_CANE_BLOCK) || (block.getRelative(BlockFace.UP)).getType().equals(Material.CHORUS_PLANT) || (block.getRelative(BlockFace.UP)).getType().equals(Material.CHORUS_FLOWER)){
+			if((block.getRelative(BlockFace.UP)).getType().equals(Material.CACTUS) || (block.getRelative(BlockFace.UP)).getType().equals(Material.LEGACY_SUGAR_CANE_BLOCK) || (block.getRelative(BlockFace.UP)).getType().equals(Material.CHORUS_PLANT) || (block.getRelative(BlockFace.UP)).getType().equals(Material.CHORUS_FLOWER)){
 				Block up = block.getRelative(BlockFace.UP);
 				do
 				{
-					if(up.getType().equals(Material.CACTUS) || up.getType().equals(Material.SUGAR_CANE_BLOCK) || up.getType().equals(Material.CHORUS_PLANT) || up.getType().equals(Material.CHORUS_FLOWER)){
+					if(up.getType().equals(Material.CACTUS) || up.getType().equals(Material.LEGACY_SUGAR_CANE_BLOCK) || up.getType().equals(Material.CHORUS_PLANT) || up.getType().equals(Material.CHORUS_FLOWER)){
 						if(entity!=null){
 							sBlocks.add(new SBlock(up, entity));
 						}else{
@@ -429,7 +429,7 @@ public class BlockEventListeners implements Listener{
 						}
 					}
 					up = ((up.getLocation()).add(0,1,0)).getBlock();
-				}while(up.getType().equals(Material.CACTUS) || up.getType().equals(Material.SUGAR_CANE_BLOCK) || up.getType().equals(Material.CHORUS_PLANT) || up.getType().equals(Material.CHORUS_FLOWER));
+				}while(up.getType().equals(Material.CACTUS) || up.getType().equals(Material.LEGACY_SUGAR_CANE_BLOCK) || up.getType().equals(Material.CHORUS_PLANT) || up.getType().equals(Material.CHORUS_FLOWER));
 			}
 			if(entity!=null){
 				sBlocks.add(new SBlock(block, entity));
